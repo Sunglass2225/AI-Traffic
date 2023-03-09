@@ -1,39 +1,26 @@
-'''
-Author: sh0829kk 381534335@qq.com
-Date: 2023-02-08 21:57:11
-LastEditors: sh0829kk 381534335@qq.com
-LastEditTime: 2023-02-13 16:20:33
-FilePath: /AI-Traffic/run.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
-'''
+from asyncio.windows_events import NULL
 import pandas as pd
 import numpy as np
 from Network import Network
 from Controller import MaxPressureController
-from Controller import dqnController
+from Controller import IDQNcontroller
 import traci
-import os, sys
+import os
+import sys
 import json
-
-def updateMetrics(conn,metrics,state,geometry):
-    for lane in geometry["LaneID"]:
-        metrics['WaitingTime'].append(conn.lane.getWaitingTime(lane))
-        metrics['CO2'].append(conn.lane.getCO2Emission(lane))
-            
-    for vehicle in state["vehicleID"]:
-        metrics['TimeLoss'].append(conn.vehicle.getTimeLoss(vehicle))
-    return metrics
-
+from DQN_Agent import DQNAgent
 
 if __name__ == "__main__":
 
-    controller_type = "max_pressure"
+    controller_type = "idqn_Controller"
 
     # LOAD SUMO STUFF
-    cfgfilename = "test_1110.sumo.cfg" # sys.argv[1]
-
+    cfgfilename = "SUMO_Network.sumo.cfg"
+    
     dir_path = os.path.dirname(os.path.realpath(__file__))
     filepath = os.path.join(dir_path,"network",cfgfilename)
+    print(filepath)
+
     sumoCmd = ["sumo", "-c", filepath]
     #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
 
@@ -43,40 +30,74 @@ if __name__ == "__main__":
     conn = traci.getConnection(tracilabel)
 
     network = Network(filepath, conn)
-    controller = "max_pressure"
-    if controller_type=="max_pressure":
+    controller = None
+    agent = None
+    if controller_type == "max_pressure":
         controller = MaxPressureController()
-    else :
-        controller = dqnController()
+    else:
+        controller = IDQNcontroller()
+        agent = DQNAgent()
+        try:
+            agent.load('DQN_control_0.h5')
+            print('Agent_loaded')
+        except:
+            print('No models found')
 
     step = 0
+    action = 0
+    reward_list = [0, 0, 0]
+    state_list = [0, 0, 0]
+    action_list = [0, 0, 0]
 
-    metrics = {'WaitingTime':[],'AccumulatedWaitinTime':[],'CO2':[],'TimeLoss':[]}
     while conn.simulation.getMinExpectedNumber() > 0:
         conn.simulationStep()
-        if step > 1 and step%30 == 0: 
+        if step > 1 and step % 30 == 0:
 
             # get current state
-            state = network.getState(conn)
-            geometry = network.getGeometry()
 
-            # get maxpressure controller
-            control = controller.getController(geometry,state)
+            intersections = list(network.network.keys())
+            print("intersections" + str(intersections))
+            print("in step " + str(step))
 
-            # update the state of the network
-            network.applyControl(control,conn)      
+            if controller_type == "max_pressure":
+                for i in range(len(intersections)):
+                    intersection = intersections[i]
+                    state = network.getState(conn,intersection)
+                    geometry = network.getGeometry(intersection)
 
-            print('vehicle',network.state["vehicleID"])
+                    # get maxpressure controller
+                    control = controller.getController(geometry,state)
+                    print("   " + intersection + " light list : " + str(control))
+                    # update the state of the network
+                    network.applyControl(control,conn,intersection)      
+                
+                    #########write_state_to_file(state)   
+                    #metrics = updateMetrics(conn,metrics,state,geometry)
             
-            #########write_state_to_file(state)   
-            metrics = updateMetrics(conn,metrics,state,geometry)
-           
+            if controller_type == "idqn_Controller":
+                print("Start")
 
-    
-  
-        ## RUN Data Analysis 
+                for i in range(len(intersections)):         
+                    intersection = intersections[i]
+                    geometry = network.getGeometry(intersection)
+                    action  = action_list[i]
+
+                    state = network.IDQN_getstate(conn, intersection, action)
+
+                    result = controller.getController(state, geometry, agent)
+                    control = result[0]
+                    action = result[1]
+                    action_list[i] = action
+                    print("   " + intersection + " light list : " + str(control))
+                    print("   " + intersection + " Action : " + str(action + 1))
+                    # update the state of the network
+                    network.applyControl(control,conn,intersection)   
+
+           
         step += 1
 
-    print(metrics)
+
+   
 
     traci.close(False)
+

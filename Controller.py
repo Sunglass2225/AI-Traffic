@@ -1,5 +1,6 @@
-import traci
 from abc import ABC, abstractmethod
+from DQN_Agent import DQNAgent
+
  
 class Controller(ABC):
     @abstractmethod
@@ -44,6 +45,56 @@ class MaxPressureController(Controller):
 class dqnController(Controller):
     def __init__(self):
         self.c = None
+
+    def getController(self, state, geometry, conn):
+        agent = DQNAgent()
+        action = agent.act(state)
+
+        multi_controller = []
+        
+        T = []
+        T.append(((action//8**0)%8) + 1)
+        T.append(((action//8**1)%8) + 1)
+        T.append(((action//8**2)%8) + 1)
+
+        for i in range(len(geometry["intersections"])):
+            controller = []
+            for x in range(len(geometry["DQN_list_links"][i])):  # reset all light to RED
+                controller.append('r')
+            for x in range(len(geometry["DQN_list_links"][i])):  # change the phase that the max prssure link belonge to GREEN
+                if [geometry["DQN_phase_matrix"][geometry["intersections"][i]][1][x]] == T[i]:
+                    controller[x] = 'G'
+            multi_controller.append(controller)
+
+        #for i in range(geometry["trafficlight_num"]):
+        #    controller = []
+        #    for x in range(len(geometry["list_links"][i])):  # reset all light to RED
+        #        controller.append('r')
+        #    for x in range(len(geometry["list_links"][i])):  # change the phase that the max prssure link belonge to GREEN
+        #        if [geometry["phase_matrix"][geometry["trafficlight_list"][i]][1][x]] == T[i]:
+        #            controller[x] = 'G'
+        #    multi_controller.append(controller)
+
+
+        return multi_controller, T, action
+
+class IDQNcontroller(Controller):
+    def __init__(self):
+        self.c = None
+
+    def getController(self, state, geometry, agent):
+        result = agent.act(state)
+        action = result
+
+        coltroller = []
+        for i in range(len(geometry["list_links"])):  # reset all light to RED
+            coltroller.append('r')
+        for i in range(len(geometry["list_links"])):  # change the phase that the max prssure link belonge to GREEN
+            if geometry["phase_matrix"][1][i] == action + 1:
+                coltroller[i] = 'G'
+        return coltroller, action
+    pass
+
 
 
 

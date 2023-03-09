@@ -3,87 +3,151 @@ import numpy as np
 from sumolib import checkBinary
 import traci
 import os, sys
-
-
-# #set up SUMO env path
-# os.environ['SUMO_HOME'] = '/usr/local/opt/sumo/share/sumo'
-# if 'SUMO_HOME' in os.environ:
-#         tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
-#         sys.path.append(tools)
-# else:
-#     sys.exit("please declare environment variable 'SUMO_HOME'")
+import optparse
 
 class Network:
 
-  #self.traci
-
-  ## constructor to initialize an network object
-  #def __init__(self, traci,fgfilename):
   def __init__(self,cfgfilename, conn):
     
-
-    self.geometry = {}
-    self.state = {}   #map from link/lane id to number of vehicles
-
+    self.network = {}
+    self.DQNgeometry = {}
+    self.allLaneId = []
     step = 0
     i = 0
-    LaneID = conn.lane.getIDList()
-    numberOfLan = getLaneNumber(conn.lane.getIDList())
-    conn.trafficlight.setRedYellowGreenState("node1", "rrrrrrrrrrrr")
+    allLaneId = []
+    intersections = conn.trafficlight.getIDList()
+    for i in range(len(intersections)):
+      self.network[intersections[i]] = {"geometry": {}, "state" : {}}
 
-    list_links = trafficlight_link("node1", conn)
+      list_links = trafficlight_link(intersections[i], conn)
 
-    light_list = trafficlight_light("node1", conn)
+      LaneID = getLaneID(list_links)
+      for k in range(len(LaneID)):
+        allLaneId.append(LaneID[k])
+      numberOfLane = len(LaneID)
+      allnumberofLane = len(set(allLaneId))
+      conn.trafficlight.setRedYellowGreenState(intersections[i], "GGrrrrrrrrrr")
 
-    phase_matrix = trafficlight_phase(list_links, light_list)
+      light_list = trafficlight_light(intersections[i], conn)
 
-    length_lanes = {}   # map from lane_id to length of it
-    lane_pairs = {}     # map from upper_lane_id to down_lane_id
-    pressure_map = {}   # map from pair of lanes'( one stream)' to pressure
-    vehicles_lanes = []
-    res = []
+      phase_matrix = trafficlight_phase(list_links, light_list)
 
-    for x in range(numberOfLan):  
-            each_length = conn.lane.getLength(LaneID[x])  # get current length
-            length_lanes[LaneID[x]] = each_length          # put into a map
-            links = conn.lane.getLinks(LaneID[x])         # get links list of current lane
-            if len(links) > 0 and links[0][-2] != 't':     # if it has a list and it's not u-turn
-                lane_pairs[LaneID[x]] = links[0][0] + links[0][-2]    # put it into the map
-                
-    # forming the map from pair of lanes'( one stream)' to the number of vehicles         
-    for key in lane_pairs:                                      
-        upper_to_down = key + "," + lane_pairs[key][0:-1]   # forming the key: upper_lane_id + comma + down_lane_id
-        pressure_map[upper_to_down] = 0
-    step += 1
+      length_lanes = {}   # map from lane_id to length of it
+      lane_pairs = {}     # map from upper_lane_id to down_lane_id
+      pressure_map = {}   # map from pair of lanes'( one stream)' to pressure
+      vehicles_lanes = []
+      res = []
 
 
-    self.geometry["LaneID"] = LaneID
-    self.geometry["pressure_map"] = pressure_map
-    self.geometry["length_lanes"] = length_lanes
-    self.geometry["list_links"] = list_links
-    self.geometry["phase_matrix"] = phase_matrix
-    self.geometry["numberOfLan"] = numberOfLan
-    self.geometry["length_lanes"] = length_lanes
-    self.geometry["light_list"] = light_list
-    
-  def getGeometry(self):
-    return self.geometry
+      for j in range(len(LaneID)):
+        each_length = conn.lane.getLength(LaneID[j]) # get current length
+        length_lanes[LaneID[j]] = each_length # put into a map
+                  
+      # forming the map from pair of lanes'( one stream)' to the number of vehicles         
+      for x in range(len(list_links)):                                      
+          upper_to_down = list_links[x][0] + "," + list_links[x][1]   # forming the key: upper_lane_id + comma + down_lane_id
+          pressure_map[upper_to_down] = 0
+      step += 1
 
-  def getState(self,conn):
+
+      self.network[intersections[i]]["geometry"]["LaneID"] = LaneID
+      self.network[intersections[i]]["geometry"]["pressure_map"] = pressure_map
+      self.network[intersections[i]]["geometry"]["length_lanes"] = length_lanes
+      self.network[intersections[i]]["geometry"]["list_links"] = list_links
+      self.network[intersections[i]]["geometry"]["phase_matrix"] = phase_matrix
+      self.network[intersections[i]]["geometry"]["numberOfLane"] = numberOfLane
+      self.network[intersections[i]]["geometry"]["length_lanes"] = length_lanes
+      self.network[intersections[i]]["geometry"]["light_list"] = light_list
+
+    DQN_list_links = []
+    DQN_light_list = []
+    DQN_phase_matrix = {}
+    for i in range(len(intersections)):
+        DQN_list_links.append(trafficlight_link(intersections[i],conn))
+        DQN_light_list.append(trafficlight_light(intersections[i],conn))
+        DQN_phase_matrix[intersections[i]] = trafficlight_phase(DQN_list_links[i], DQN_light_list[i])
+
+    self.allLaneId = list(set(allLaneId))
+    self.allnumberofLane = allnumberofLane
+    self.intersections = intersections
+    self.DQNgeometry["DQN_list_links"] = DQN_list_links
+    self.DQNgeometry["DQN_light_list"] = DQN_light_list
+    self.DQNgeometry["DQN_phase_matrix"] = DQN_phase_matrix
+    self.DQNgeometry["intersections"] = intersections
+     
+  def getGeometry(self,intersection):
+    return self.network[intersection]["geometry"]
+
+  def getState(self,conn,intersection):
     vehicle_number_each_lane = {}                # map from lane_id to number of vehicles
-    for x in range(self.geometry["numberOfLan"]):  
-        lane_length = conn.lane.getLength(self.geometry["LaneID"][x])                    # extract length and number of
-        total_number = conn.lane.getLastStepVehicleNumber(self.geometry["LaneID"][x])    # vehicles in each lane
-        vehicle_number_each_lane[self.geometry["LaneID"][x]] = total_number
-    self.state["vehicle_number_each_lane"] = vehicle_number_each_lane
+    for x in range(self.network[intersection]["geometry"]["numberOfLane"]):  
+        lane_length = conn.lane.getLength(self.network[intersection]["geometry"]["LaneID"][x])                    # extract length and number of
+        total_number = conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])    # vehicles in each lane
+        vehicle_number_each_lane[self.network[intersection]["geometry"]["LaneID"][x]] = total_number
+    self.network[intersection]["state"]["vehicle_number_each_lane"] = vehicle_number_each_lane
     VehicleID = conn.vehicle.getIDList()
-    self.state["vehicleID"] = VehicleID
-    return self.state
+    self.network[intersection]["state"]["vehicleID"] = VehicleID
+    return self.network[intersection]["state"]
+
+  def IDQN_getstate(self, conn, intersection, action):
+    number_each_lane = {}
+    for x in range(len(self.network[intersection]["geometry"]["LaneID"])):  
+        total_number = conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])
+        number_each_lane[self.network[intersection]["geometry"]["LaneID"][x]] = total_number
+            
+    number_each_lane_list = list(number_each_lane.values())            
+
+    DQN_action =[]
+    for x in range(8):   
+        if x == action :
+            DQN_action.append(1)
+        else:
+            DQN_action.append(0)
+
+
+    num_each_lane_arr = np.array(number_each_lane_list)
+    num_each_lane_arr = num_each_lane_arr.reshape(1, 24, 1)
+
+    DQN_action_arr = np.array(DQN_action)
+    DQN_action_arr = DQN_action_arr.reshape(1, 8, 1)
+      
+    return [num_each_lane_arr, DQN_action_arr], number_each_lane_list
+
+  def getVehicleNum(self, conn):
+    VehicleNum = 0
+    for i in range(self.allnumberofLane):
+        VehicleNum += conn.lane.getLastStepVehicleNumber(self.allLaneId[i])
+
+    return VehicleNum
+
+  def getHaltingNum(self, conn):
+    HaltingNum = 0
+    for i in range(self.allnumberofLane):
+        HaltingNum += conn.lane.getLastStepHaltingNumber(self.allLaneId[i])
+
+    return HaltingNum
+
+  def gethaltingratio(self, intersection, conn):
+    pressuer_ratio = 0
+    veh_num = 0
+    hal_num = 0
+    for x in range(len(self.network[intersection]["geometry"]["LaneID"])):
+        veh_num += conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])
+        hal_num += conn.lane.getLastStepHaltingNumber(self.network[intersection]["geometry"]["LaneID"][x])
+    
+    if veh_num == 0:
+        pressuer_ratio = 0
+    else:
+        pressuer_ratio = hal_num/veh_num
+
+    return pressuer_ratio
   
-  def applyControl(self,controller, conn):
+  def applyControl(self,controller,conn,intersection):
     RedYellowGreenState = ''.join(str(e) for e in controller)
-    conn.trafficlight.setRedYellowGreenState("node1", RedYellowGreenState)
-    self.geometry["light_list"] = controller
+    conn.trafficlight.setRedYellowGreenState(intersection, RedYellowGreenState)
+    self.network[intersection]["geometry"]["light_list"] = controller
+     
+  
      
 
 
@@ -99,6 +163,13 @@ def getLaneNumber(idList):
 def findItem(theList, item1, item2):
   return [(i) for (i, sub) in enumerate(theList) if item1 and item2 in sub]
 
+def getLaneID(links):
+  res = []
+  for i in range(len(links)):
+    res.append(links[i][0])
+    res.append(links[i][1])
+  return res
+
 def trafficlight_link(junction,conn):
   links = conn.trafficlight.getControlledLinks(junction)
   out = [item for t in links for item in t]
@@ -110,7 +181,7 @@ def trafficlight_link(junction,conn):
   return list_links
 
 def trafficlight_light(junction,conn):
-  lights = conn.trafficlight.getRedYellowGreenState("node1")
+  lights = conn.trafficlight.getRedYellowGreenState(junction)
   light_list = list(lights)
   # ex:['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r']
   
@@ -137,5 +208,3 @@ def trafficlight_phase(list_links, light_list):  #putting the link, phase, and l
       Matrix[2][i] = light_list[i]
       
   return Matrix
-
-  
