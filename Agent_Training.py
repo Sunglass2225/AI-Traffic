@@ -23,19 +23,30 @@ if __name__ == '__main__':
     print(filepath)
     sumoCmd = ["sumo", "-c", filepath]
     #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
-
+        
     # parameters
     episodes = 2000
     batch_size = 32
     tracilabel = "sim1"
 
     # LOAD AGENT
-    agent = DQNAgent()
+    agent_list = [0, 0, 0]
+
+    agent1 = DQNAgent()
+    agent2 = DQNAgent()
+    agent3 = DQNAgent()
+
     try:
-        agent.load('DQN_control_0.h5')
+        agent1.load('DQN_control_2.h5')
+        agent2.load('DQN_control_2.h5')
+        agent3.load('DQN_control_2.h5')
         print('Agent_loaded')
     except:
         print('No models found')
+
+    agent_list[0] = agent1
+    agent_list[1] = agent2
+    agent_list[2] = agent3
 
     for e in range(episodes):
         
@@ -43,6 +54,7 @@ if __name__ == '__main__':
         wating_time = 0
         waiting_number = 0
         total_reward = 0
+        MSE = [0, 0, 0]
         last_ratio = [0, 0, 0]
         next_ratio = [0, 0, 0]
         reward_list = [0, 0, 0]
@@ -57,7 +69,7 @@ if __name__ == '__main__':
 
         network = Network(filepath, conn)
         intersections = network.intersections
-        training = IDQNcontroller()
+        controller = IDQNcontroller()
 
         while conn.simulation.getMinExpectedNumber() > 0 and step < 1000:
             conn.simulationStep()
@@ -76,10 +88,12 @@ if __name__ == '__main__':
                         total_reward += reward_list[i]
                         print('reward: ' + str(reward_list[i]))
                         new_state = network.IDQN_getstate(conn, intersection, action)
-                        agent.remember(state_list[i], action_list[i], reward_list[i], new_state[0], False)
-                        print('memory_lenth: ' + str(len(agent.memory)))
-                        if(len(agent.memory) > batch_size):
-                            agent.replay(batch_size)
+                        agent_list[i].remember(state_list[i], action_list[i], reward_list[i], new_state[0], False)
+                        print('memory_lenth: ' + str(len(agent_list[i].memory)))
+                        if(len(agent_list[i].memory) > batch_size):
+                            MSE[i] = agent_list[i].replay(batch_size)
+                        agent_list[i].target_train()
+
 
                 # controlling
                 for i in range(len(intersections)):         
@@ -92,7 +106,7 @@ if __name__ == '__main__':
 
                     state_check_list[i] = state[1]
 
-                    result = training.getController(state[0], geometry, agent)
+                    result = controller.getController(state[0], geometry, agent_list[i])
                     control = result[0]
                     action = result[1]
                     action_list[i] = action
@@ -105,8 +119,8 @@ if __name__ == '__main__':
                 print("Current traffic light is " + str(network.network[intersections[1]]["geometry"]["light_list"]))
                 print("Current traffic light is " + str(network.network[intersections[2]]["geometry"]["light_list"]))
 
-                list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2]]
-                with open('step_Data.csv', 'a') as w_object:
+                list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
+                with open('step_Data.csv', 'a', newline='') as w_object:
                     writer_object = writer(w_object)
                     writer_object.writerow(list01)
                     w_object.close()
@@ -115,28 +129,24 @@ if __name__ == '__main__':
             for i in range(len(intersections)):    
                 next_ratio[i] = network.gethaltingratio(intersections[i], conn)
 
-
-            waiting_number += network.getHaltingNum(conn)
-            
+            waiting_number += network.getHaltingNum(conn)            
             
             step += 1
 
 
-        mem = agent.memory[-1]
-        del agent.memory[-1]
-        agent.memory.append((mem[0], mem[1], reward_list[-1], mem[3], True))
-        #log.write('episode - ' + str(e) + ', total waiting time - ' +
-        #          str(waiting_time) + ', static waiting time - 338798 \n')
-        #log.close()
+        for i in range(len(intersections)): 
+            agent_list[i].save('DQN_control_agent_' + str(i+1) + "_" + str(e) + '.h5')
+
+
+        mem = agent_list[0].memory[-1]
+        del agent_list[0].memory[-1]
+        agent_list[0].memory.append((mem[0], mem[1], reward_list[-1], mem[3], True))
+        
         print('episode - ' + str(e) + ' total waiting number - ' + str(waiting_number))
-
-        #pyplot.show()
-
-        agent.save('DQN_control_' + str(e) + '.h5')
 
         list = [str(e), waiting_number, total_reward]
 
-        with open('Data.csv', 'a') as w_object:
+        with open('Data.csv', 'a', newline='') as w_object:
             writer_object = writer(w_object)
             writer_object.writerow(list)
             print('list', list)

@@ -9,6 +9,7 @@ import os
 import sys
 import json
 from DQN_Agent import DQNAgent
+from data_logger import Data_Logger
 
 if __name__ == "__main__":
 
@@ -21,8 +22,12 @@ if __name__ == "__main__":
     filepath = os.path.join(dir_path,"network",cfgfilename)
     print(filepath)
 
-    sumoCmd = ["sumo", "-c", filepath]
-    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+    #sumoCmd = ["sumo", "-c", filepath]
+    sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+
+    runID = 'BBB'
+    #create data logger, pass in runID
+    logger = Data_Logger(runID)
 
     # initialize the network object and controller object
     tracilabel = "sim1"
@@ -38,7 +43,7 @@ if __name__ == "__main__":
         controller = IDQNcontroller()
         agent = DQNAgent()
         try:
-            agent.load('DQN_control_0.h5')
+            agent.load('DQN_control_2.h5')
             print('Agent_loaded')
         except:
             print('No models found')
@@ -51,7 +56,7 @@ if __name__ == "__main__":
 
     while conn.simulation.getMinExpectedNumber() > 0:
         conn.simulationStep()
-        if step > 1 and step % 30 == 0:
+        if step > 1 and step % 10 == 0:
 
             # get current state
 
@@ -83,8 +88,9 @@ if __name__ == "__main__":
                     action  = action_list[i]
 
                     state = network.IDQN_getstate(conn, intersection, action)
+                    state_metric = network.getState(conn, intersection)
 
-                    result = controller.getController(state, geometry, agent)
+                    result = controller.getController(state[0], geometry, agent)
                     control = result[0]
                     action = result[1]
                     action_list[i] = action
@@ -93,6 +99,8 @@ if __name__ == "__main__":
                     # update the state of the network
                     network.applyControl(control,conn,intersection)   
 
+                logger.updateLane(step, conn, network.allLaneId)
+                logger.updateVeh(step, conn, state_metric)
            
         step += 1
 
