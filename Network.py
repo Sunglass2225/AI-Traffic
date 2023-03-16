@@ -7,7 +7,7 @@ import optparse
 
 class Network:
 
-  def __init__(self,cfgfilename, conn):
+  def __init__(self,cfgfilename, conn, agent):
     
     self.network = {}
     self.DQNgeometry = {}
@@ -30,7 +30,7 @@ class Network:
 
       light_list = trafficlight_light(intersections[i], conn)
 
-      phase_matrix = trafficlight_phase(list_links, light_list)
+      phase_matrix = trafficlight_phase(list_links, light_list, agent)
 
       length_lanes = {}   # map from lane_id to length of it
       lane_pairs = {}     # map from upper_lane_id to down_lane_id
@@ -38,7 +38,7 @@ class Network:
       vehicles_lanes = []
       res = []
 
-
+        
       for j in range(len(LaneID)):
         each_length = conn.lane.getLength(LaneID[j]) # get current length
         length_lanes[LaneID[j]] = each_length # put into a map
@@ -65,7 +65,7 @@ class Network:
     for i in range(len(intersections)):
         DQN_list_links.append(trafficlight_link(intersections[i],conn))
         DQN_light_list.append(trafficlight_light(intersections[i],conn))
-        DQN_phase_matrix[intersections[i]] = trafficlight_phase(DQN_list_links[i], DQN_light_list[i])
+        DQN_phase_matrix[intersections[i]] = trafficlight_phase(DQN_list_links[i], DQN_light_list[i], agent)
 
     self.allLaneId = list(set(allLaneId))
     self.allnumberofLane = allnumberofLane
@@ -89,16 +89,16 @@ class Network:
     self.network[intersection]["state"]["vehicleID"] = VehicleID
     return self.network[intersection]["state"]
 
-  def IDQN_getstate(self, conn, intersection, action):
+  def DQN_getstate(self, conn, action):
     number_each_lane = {}
-    for x in range(len(self.network[intersection]["geometry"]["LaneID"])):  
-        total_number = conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])
-        number_each_lane[self.network[intersection]["geometry"]["LaneID"][x]] = total_number
+    for x in range(self.allnumberofLane):  
+        total_number = conn.lane.getLastStepVehicleNumber(self.allLaneId[x])
+        number_each_lane[self.allLaneId[x]] = total_number
             
     number_each_lane_list = list(number_each_lane.values())            
 
     DQN_action =[]
-    for x in range(8):   
+    for x in range(64):   
         if x == action :
             DQN_action.append(1)
         else:
@@ -106,12 +106,12 @@ class Network:
 
 
     num_each_lane_arr = np.array(number_each_lane_list)
-    num_each_lane_arr = num_each_lane_arr.reshape(1, 24, 1)
+    num_each_lane_arr = num_each_lane_arr.reshape(1, 60, 1)
 
     DQN_action_arr = np.array(DQN_action)
-    DQN_action_arr = DQN_action_arr.reshape(1, 8, 1)
+    DQN_action_arr = DQN_action_arr.reshape(1, 64, 1)
       
-    return [num_each_lane_arr, DQN_action_arr], number_each_lane_list
+    return [num_each_lane_arr, DQN_action_arr]
 
   def getVehicleNum(self, conn):
     VehicleNum = 0
@@ -141,6 +141,14 @@ class Network:
         pressuer_ratio = hal_num/veh_num
 
     return pressuer_ratio
+
+
+  def get_options(self):
+    optParser = optparse.OptionParser()
+    optParser.add_option("--nogui", action="store_true",
+                            default=False, help="run the commandline version of sumo")
+    options, args = optParser.parse_args()
+    return options
   
   def applyControl(self,controller,conn,intersection):
     RedYellowGreenState = ''.join(str(e) for e in controller)
@@ -187,7 +195,7 @@ def trafficlight_light(junction,conn):
   
   return light_list
 
-def trafficlight_phase(list_links, light_list):  #putting the link, phase, and light into a matrix
+def trafficlight_phase(list_links, light_list, agent):  #putting the link, phase, and light into a matrix
   a = 0  # phase id
   w = len(list_links)
   h = 3
@@ -201,8 +209,9 @@ def trafficlight_phase(list_links, light_list):  #putting the link, phase, and l
       if list_links[i][0][0] == list_links[i-1][0][0] and list_links[i][0][1] == list_links[i-1][0][1] and list_links[i][1][0] == list_links[i-1][1][0] and list_links[i][1][1] == list_links[i-1][1][1]:
           a -= 1
           # using the fisrt two chart of the two elements to defined whether their in the same phase
+      
+      Matrix[1][i] = a % agent.intersection_action_size
       a +=1
-      Matrix[1][i] = a
       
   for i in range(len(list_links)):
       Matrix[2][i] = light_list[i]
