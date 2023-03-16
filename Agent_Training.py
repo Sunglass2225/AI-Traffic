@@ -20,6 +20,8 @@ if __name__ == '__main__':
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     filepath = os.path.join(dir_path,"network",cfgfilename)
+    filepath_step_data = os.path.join(dir_path,"step_Data.csv")
+    filepath_data = os.path.join(dir_path,"Data.csv")
     print(filepath)
     sumoCmd = ["sumo", "-c", filepath]
     #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation in sumo-gui
@@ -69,7 +71,7 @@ if __name__ == '__main__':
         intersections = network.intersections
         controller = IDQNcontroller()
 
-        while conn.simulation.getMinExpectedNumber() > 0 and step < 1000:
+        while conn.simulation.getMinExpectedNumber() > 0 and step < 5000:
             conn.simulationStep()
 
             if step >= 0 and step%10 == 0:
@@ -95,6 +97,8 @@ if __name__ == '__main__':
                     geometry = network.getGeometry(intersection)
                     action  = action_list[i]
 
+                    #print(conn.multientryexit.getIDList())
+
                     state = network.IDQN_getstate(conn, intersection, action)
                     state_list[i] = state[0]
 
@@ -114,7 +118,7 @@ if __name__ == '__main__':
                 print("Current traffic light is " + str(network.network[intersections[2]]["geometry"]["light_list"]))
 
                 list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
-                with open('step_Data.csv', 'a', newline='') as w_object:
+                with open(filepath_step_data, 'a', newline='') as w_object:
                     writer_object = writer(w_object)
                     writer_object.writerow(list01)
                     w_object.close()
@@ -144,7 +148,7 @@ if __name__ == '__main__':
 
         list = [str(e), Halting_number, total_reward]
 
-        with open('Data.csv', 'a', newline='') as w_object:
+        with open(filepath_data, 'a', newline='') as w_object:
             writer_object = writer(w_object)
             writer_object.writerow(list)
             print('list', list)
