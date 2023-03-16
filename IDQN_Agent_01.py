@@ -7,7 +7,7 @@ import keras # important tool for deep learning
 import random
 import numpy as np
 
-from collections import deque  #®e¾¹
+from collections import deque  #å®¹å™¨
 from keras.layers import Input, Flatten, Dense
 from keras.models import Model  
 
@@ -34,7 +34,7 @@ class DQNAgent:
         x2 = Flatten()(input_2)
 
         x = keras.layers.concatenate([x1, x2])
-        x = Dense(128, activation='relu')(x) #Dense ´¶³q¯«¸gºô¸ô  ## why 128
+        x = Dense(128, activation='relu')(x) #Dense æ™®é€šç¥žç¶“ç¶²è·¯  ## why 128
         x = Dense(64, activation='relu')(x)  # why 64
         x = Dense(8)(x) #linear from 1 to 0   # soft_max 
 
@@ -70,7 +70,7 @@ class DQNAgent:
                           np.amax(self.target_model.predict(next_state)[0]))
             A += (target[0][action] - Q_future)**2
             target[0][action] = Q_future
-            self.model.fit(state, target, epochs=1, verbose=0) #Àu¤Æ¼Ò«¬ªº¨ç¼Æ
+            self.model.fit(state, target, epochs=1, verbose=0) #å„ªåŒ–æ¨¡åž‹çš„å‡½æ•¸
             
         MSE = A/batch_size
             
