@@ -113,7 +113,7 @@ if __name__ == '__main__':
                     network.applyControl(controller[i],conn, geometry["intersections"][i])
                     print("Current traffic light is " + str(network.network[intersections[i]]["geometry"]["light_list"]))
 
-            reward += network.getHaltingNum(conn)
+            reward += -(network.getHaltingNum(conn))
 
             Halting_number += network.getHaltingNum(conn)
 
