@@ -90,10 +90,9 @@ class IDQNcontroller(Controller):
         for i in range(len(geometry["list_links"])):  # reset all light to RED
             coltroller.append('r')
         for i in range(len(geometry["list_links"])):  # change the phase that the max prssure link belonge to GREEN
-            if geometry["phase_matrix"][1][i] == action + 1:
+            if geometry["phase_matrix"][1][i] == action:
                 coltroller[i] = 'G'
         return coltroller, action
-    pass
 
 
 

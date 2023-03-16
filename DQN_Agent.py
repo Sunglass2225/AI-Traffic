@@ -23,20 +23,20 @@ class DQNAgent:
         self.learning_rate = 0.001
         self.model = self._build_model()
         self.target_model = self._build_model()
-        self.action_size = 8
+        self.action_size = 4
 
     def _build_model(self):
         # Neural Net for Deep-Q learning Model
         input_1 = Input(shape=(24, 1))
         x1 = Flatten()(input_1)
 
-        input_2 = Input(shape=(8, 1))
+        input_2 = Input(shape=(4, 1))
         x2 = Flatten()(input_2)
 
         x = keras.layers.concatenate([x1, x2])
         x = Dense(128, activation='relu')(x) #Dense 普通神經網路  ## why 128
         x = Dense(64, activation='relu')(x)  # why 64
-        x = Dense(8)(x) #linear from 1 to 0   # soft_max 
+        x = Dense(4)(x) #linear from 1 to 0   # soft_max 
 
         model = Model(inputs=[input_1, input_2], outputs=[x])
         model.compile(optimizer=optimizers.Adam(
@@ -68,8 +68,8 @@ class DQNAgent:
             else:
                 Q_future = (reward + self.gamma *
                           np.amax(self.target_model.predict(next_state)[0]))
-            A += (target[0][action] - Q_future)**2
-            target[0][action] = Q_future
+                A += (target[0][action] - Q_future)**2
+                target[0][action] = Q_future
             self.model.fit(state, target, epochs=1, verbose=0) #優化模型的函數
             
         MSE = A/batch_size
@@ -83,7 +83,6 @@ class DQNAgent:
             target_weights[i] = weights[i]
         self.target_model.set_weights(target_weights)
             
-
 
     def load(self, name):
         self.model.load_weights(name)

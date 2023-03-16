@@ -37,9 +37,9 @@ if __name__ == '__main__':
     agent3 = DQNAgent()
 
     try:
-        agent1.load('DQN_control_2.h5')
-        agent2.load('DQN_control_2.h5')
-        agent3.load('DQN_control_2.h5')
+        agent1.load('DQN_control_agent_1_49.h5')
+        agent2.load('DQN_control_agent_2_49.h5')
+        agent3.load('DQN_control_agent_3_49.h5')
         print('Agent_loaded')
     except:
         print('No models found')
@@ -55,8 +55,6 @@ if __name__ == '__main__':
         waiting_number = 0
         total_reward = 0
         MSE = [0, 0, 0]
-        last_ratio = [0, 0, 0]
-        next_ratio = [0, 0, 0]
         reward_list = [0, 0, 0]
         state_list = [0, 0, 0]
         action_list = [0, 0, 0]
@@ -67,7 +65,7 @@ if __name__ == '__main__':
         traci.start(sumoCmd, label=tracilabel)
         conn = traci.getConnection(tracilabel)
 
-        network = Network(filepath, conn)
+        network = Network(filepath, conn, agent_list[0])
         intersections = network.intersections
         controller = IDQNcontroller()
 
@@ -81,10 +79,6 @@ if __name__ == '__main__':
                 # memorizing
                 if step > 2:
                     for i in range(len(intersections)):
-                        if step == 10:
-                            last_ratio[i] = next_ratio[i]    
-                        reward_list[i] = 100*(last_ratio[i] - next_ratio[i])
-                        last_ratio[i] = next_ratio[i]
                         total_reward += reward_list[i]
                         print('reward: ' + str(reward_list[i]))
                         new_state = network.IDQN_getstate(conn, intersection, action)
@@ -111,7 +105,7 @@ if __name__ == '__main__':
                     action = result[1]
                     action_list[i] = action
                     print("   " + intersection + " light list : " + str(control))
-                    print("   " + intersection + " Action : " + str(action + 1))
+                    print("   " + intersection + " Action : " + str(action))
                     # update the state of the network
                     network.applyControl(control,conn,intersection)   
 
@@ -119,15 +113,16 @@ if __name__ == '__main__':
                 print("Current traffic light is " + str(network.network[intersections[1]]["geometry"]["light_list"]))
                 print("Current traffic light is " + str(network.network[intersections[2]]["geometry"]["light_list"]))
 
-                list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
-                with open('step_Data.csv', 'a', newline='') as w_object:
-                    writer_object = writer(w_object)
-                    writer_object.writerow(list01)
-                    w_object.close()
+                #list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
+                #with open('step_Data.csv', 'a', newline='') as w_object:
+                #    writer_object = writer(w_object)
+                #    writer_object.writerow(list01)
+                #    w_object.close()
+                reward_list[i] = 0
 
             
             for i in range(len(intersections)):    
-                next_ratio[i] = network.gethaltingratio(intersections[i], conn)
+                reward_list[i] += -(network.getIntersectionHaltingNum(intersections[i], conn))
 
             waiting_number += network.getHaltingNum(conn)            
             
@@ -135,7 +130,7 @@ if __name__ == '__main__':
 
 
         for i in range(len(intersections)): 
-            agent_list[i].save('DQN_control_agent_' + str(i+1) + "_" + str(e) + '.h5')
+            agent_list[i].save('DQN_control_sinale_agent_' + str(i+1) + "_" + str(e) + '.h5')
 
 
         mem = agent_list[0].memory[-1]

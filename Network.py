@@ -7,7 +7,7 @@ import optparse
 
 class Network:
 
-  def __init__(self,cfgfilename, conn):
+  def __init__(self,cfgfilename, conn, agent):
     
     self.network = {}
     self.DQNgeometry = {}
@@ -30,7 +30,7 @@ class Network:
 
       light_list = trafficlight_light(intersections[i], conn)
 
-      phase_matrix = trafficlight_phase(list_links, light_list)
+      phase_matrix = trafficlight_phase(list_links, light_list, agent)
 
       length_lanes = {}   # map from lane_id to length of it
       lane_pairs = {}     # map from upper_lane_id to down_lane_id
@@ -65,7 +65,7 @@ class Network:
     for i in range(len(intersections)):
         DQN_list_links.append(trafficlight_link(intersections[i],conn))
         DQN_light_list.append(trafficlight_light(intersections[i],conn))
-        DQN_phase_matrix[intersections[i]] = trafficlight_phase(DQN_list_links[i], DQN_light_list[i])
+        DQN_phase_matrix[intersections[i]] = trafficlight_phase(DQN_list_links[i], DQN_light_list[i], agent)
 
     self.allLaneId = list(set(allLaneId))
     self.allnumberofLane = allnumberofLane
@@ -98,7 +98,7 @@ class Network:
     number_each_lane_list = list(number_each_lane.values())            
 
     DQN_action =[]
-    for x in range(8):   
+    for x in range(4):   
         if x == action :
             DQN_action.append(1)
         else:
@@ -109,7 +109,7 @@ class Network:
     num_each_lane_arr = num_each_lane_arr.reshape(1, 24, 1)
 
     DQN_action_arr = np.array(DQN_action)
-    DQN_action_arr = DQN_action_arr.reshape(1, 8, 1)
+    DQN_action_arr = DQN_action_arr.reshape(1, 4, 1)
       
     return [num_each_lane_arr, DQN_action_arr], number_each_lane_list
 
@@ -124,6 +124,13 @@ class Network:
     HaltingNum = 0
     for i in range(self.allnumberofLane):
         HaltingNum += conn.lane.getLastStepHaltingNumber(self.allLaneId[i])
+
+    return HaltingNum
+
+  def getIntersectionHaltingNum(self, intersection, conn):
+    HaltingNum = 0
+    for i in range(len(self.network[intersection]["geometry"]["LaneID"])):
+        HaltingNum += conn.lane.getLastStepHaltingNumber(self.network[intersection]["geometry"]["LaneID"][i])
 
     return HaltingNum
 
@@ -187,7 +194,7 @@ def trafficlight_light(junction,conn):
   
   return light_list
 
-def trafficlight_phase(list_links, light_list):  #putting the link, phase, and light into a matrix
+def trafficlight_phase(list_links, light_list, agent):  #putting the link, phase, and light into a matrix
   a = 0  # phase id
   w = len(list_links)
   h = 3
@@ -201,8 +208,10 @@ def trafficlight_phase(list_links, light_list):  #putting the link, phase, and l
       if list_links[i][0][0] == list_links[i-1][0][0] and list_links[i][0][1] == list_links[i-1][0][1] and list_links[i][1][0] == list_links[i-1][1][0] and list_links[i][1][1] == list_links[i-1][1][1]:
           a -= 1
           # using the fisrt two chart of the two elements to defined whether their in the same phase
-      a +=1
-      Matrix[1][i] = a
+      
+      Matrix[1][i] = a % agent.action_size
+      a += 1
+
       
   for i in range(len(list_links)):
       Matrix[2][i] = light_list[i]
