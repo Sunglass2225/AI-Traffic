@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
         print("Initial traffic light is " + str(geometry["DQN_light_list"]))
 
-        while conn.simulation.getMinExpectedNumber() > 0 and step < 5000:
+        while conn.simulation.getMinExpectedNumber() > 0:
             conn.simulationStep()
             if step >= 0 and step%10 == 0:
                 print('step: ' + str(step))
