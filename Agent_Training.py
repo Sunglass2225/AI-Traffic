@@ -22,7 +22,7 @@ if __name__ == '__main__':
     filepath = os.path.join(dir_path,"network",cfgfilename)
     print(filepath)
     sumoCmd = ["sumo", "-c", filepath]
-    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation in sumo-gui
         
     # parameters
     episodes = 2000
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         
         step = 0
         wating_time = 0
-        waiting_number = 0
+        Halting_number = 0
         total_reward = 0
         MSE = [0, 0, 0]
         reward_list = [0, 0, 0]
@@ -113,18 +113,21 @@ if __name__ == '__main__':
                 print("Current traffic light is " + str(network.network[intersections[1]]["geometry"]["light_list"]))
                 print("Current traffic light is " + str(network.network[intersections[2]]["geometry"]["light_list"]))
 
-                #list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
-                #with open('step_Data.csv', 'a', newline='') as w_object:
-                #    writer_object = writer(w_object)
-                #    writer_object.writerow(list01)
-                #    w_object.close()
-                reward_list[i] = 0
+                list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
+                with open('step_Data.csv', 'a', newline='') as w_object:
+                    writer_object = writer(w_object)
+                    writer_object.writerow(list01)
+                    w_object.close()
+
+                for i in range(len(intersections)): 
+                    reward_list[i] = 0
+                
 
             
             for i in range(len(intersections)):    
                 reward_list[i] += -(network.getIntersectionHaltingNum(intersections[i], conn))
 
-            waiting_number += network.getHaltingNum(conn)            
+            Halting_number += network.getHaltingNum(conn)            
             
             step += 1
 
@@ -137,9 +140,9 @@ if __name__ == '__main__':
         del agent_list[0].memory[-1]
         agent_list[0].memory.append((mem[0], mem[1], reward_list[-1], mem[3], True))
         
-        print('episode - ' + str(e) + ' total waiting number - ' + str(waiting_number))
+        print('episode - ' + str(e) + ' total Halting number - ' + str(Halting_number))
 
-        list = [str(e), waiting_number, total_reward]
+        list = [str(e), Halting_number, total_reward]
 
         with open('Data.csv', 'a', newline='') as w_object:
             writer_object = writer(w_object)

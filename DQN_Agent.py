@@ -27,29 +27,27 @@ class DQNAgent:
 
     def _build_model(self):
         # Neural Net for Deep-Q learning Model
-        input_1 = Input(shape=(24, 1))
+        input_1 = Input(shape=(60, 1))
         x1 = Flatten()(input_1)
 
         input_2 = Input(shape=(4, 1))
         x2 = Flatten()(input_2)
 
         x = keras.layers.concatenate([x1, x2])
-        x = Dense(128, activation='relu')(x) #Dense 普通神經網路  ## why 128
-        x = Dense(64, activation='relu')(x)  # why 64
-        x = Dense(4)(x) #linear from 1 to 0   # soft_max 
+        x = Dense(128, activation='relu')(x) 
+        x = Dense(64, activation='relu')(x) 
+        x = Dense(4)(x) 
 
         model = Model(inputs=[input_1, input_2], outputs=[x])
         model.compile(optimizer=optimizers.Adam(
-            lr=self.learning_rate), loss='mse',  metrics=['mse']) #loss function################# |MSE-MSE'| < 0.0001 or learning rate*gredient < 0.001
-
-        #print(model.get_weights())
+            lr=self.learning_rate), loss='mse',  metrics=['mse']) 
         
         return model
 
     def remember(self, state, action, reward, next_state, done): 
         DQNAgent.memory.append((state, action, reward, next_state, done))
 
-    def act(self, state):  #??????? soft_max
+    def act(self, state): 
         self.epsilon *= self.epsilon_decay
         self.epsilon = max(self.epsilon_min, self.epsilon)
         if np.random.rand() <= self.epsilon:
@@ -70,7 +68,7 @@ class DQNAgent:
                           np.amax(self.target_model.predict(next_state)[0]))
                 A += (target[0][action] - Q_future)**2
                 target[0][action] = Q_future
-            self.model.fit(state, target, epochs=1, verbose=0) #優化模型的函數
+            self.model.fit(state, target, epochs=1, verbose=0)
             
         MSE = A/batch_size
             

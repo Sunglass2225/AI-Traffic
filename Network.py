@@ -91,9 +91,9 @@ class Network:
 
   def IDQN_getstate(self, conn, intersection, action):
     number_each_lane = {}
-    for x in range(len(self.network[intersection]["geometry"]["LaneID"])):  
-        total_number = conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])
-        number_each_lane[self.network[intersection]["geometry"]["LaneID"][x]] = total_number
+    for x in range(self.allnumberofLane):  
+        total_number = conn.lane.getLastStepVehicleNumber(self.allLaneId[x])
+        number_each_lane[self.allLaneId[x]] = total_number
             
     number_each_lane_list = list(number_each_lane.values())            
 
@@ -106,7 +106,7 @@ class Network:
 
 
     num_each_lane_arr = np.array(number_each_lane_list)
-    num_each_lane_arr = num_each_lane_arr.reshape(1, 24, 1)
+    num_each_lane_arr = num_each_lane_arr.reshape(1, 60, 1)
 
     DQN_action_arr = np.array(DQN_action)
     DQN_action_arr = DQN_action_arr.reshape(1, 4, 1)
