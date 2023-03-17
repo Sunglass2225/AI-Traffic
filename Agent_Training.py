@@ -125,6 +125,8 @@ if __name__ == '__main__':
 
             
             step += 1
+            if step == 800:
+                keras.backend.clear_session()
 
 
         mem = agent.memory[-1]
