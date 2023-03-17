@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-03-16 14:19:56.804108 by randomTrips.py v1_15_0+0002-e6790248698
+<configuration>
+    <end value="1200"/>
+    <net-file value="\Users/young/OneDrive/Desktop/Berkeley/Capstone/SIMPLE_NET_TESTER/simple.net.xml"/>
+    <period value="0.9"/>
+    <route-file value="low_traffic.rou.xml"/>
+</configuration>
+-->
+
+<!-- generated on 2023-03-16 14:19:56 by Eclipse SUMO duarouter Version 1.15.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="\Users/young/OneDrive/Desktop/Berkeley/Capstone/SIMPLE_NET_TESTER/simple.net.xml"/>
+        <route-files value="trips.trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="low_traffic.rou.xml"/>
+        <alternatives-output value="NUL"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="1200"/>
+    </time>
+
+    <report>
+        <no-warnings value="true"/>
+        <ignore-errors value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <vehicle id="2" depart="1.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="6" depart="5.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="7" depart="6.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="13" depart="11.70">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="22" depart="19.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="27" depart="24.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="31" depart="27.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="32" depart="28.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="33" depart="29.70">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="34" depart="30.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="44" depart="39.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="49" depart="44.10">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="51" depart="45.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="57" depart="51.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="64" depart="57.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="66" depart="59.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="73" depart="65.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="77" depart="69.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="79" depart="71.10">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="84" depart="75.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="89" depart="80.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="90" depart="81.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="92" depart="82.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="95" depart="85.50">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="99" depart="89.10">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="100" depart="90.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="106" depart="95.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="107" depart="96.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="108" depart="97.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="111" depart="99.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="115" depart="103.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="116" depart="104.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="117" depart="105.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="119" depart="107.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="127" depart="114.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="128" depart="115.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="130" depart="117.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="137" depart="123.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="144" depart="129.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="147" depart="132.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="152" depart="136.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="154" depart="138.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="156" depart="140.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="157" depart="141.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="160" depart="144.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="161" depart="144.90">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="164" depart="147.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="167" depart="150.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="169" depart="152.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="171" depart="153.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="181" depart="162.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="185" depart="166.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="186" depart="167.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="191" depart="171.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="192" depart="172.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="205" depart="184.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="207" depart="186.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="214" depart="192.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="223" depart="200.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="226" depart="203.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="231" depart="207.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="238" depart="214.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="239" depart="215.10">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="242" depart="217.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="244" depart="219.60">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="245" depart="220.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="257" depart="231.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="264" depart="237.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="270" depart="243.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="271" depart="243.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="275" depart="247.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="280" depart="252.00">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="282" depart="253.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="302" depart="271.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="304" depart="273.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="311" depart="279.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="313" depart="281.70">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="317" depart="285.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="318" depart="286.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="324" depart="291.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="325" depart="292.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="329" depart="296.10">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="337" depart="303.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="339" depart="305.10">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="341" depart="306.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="353" depart="317.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="355" depart="319.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="359" depart="323.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="362" depart="325.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="367" depart="330.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="369" depart="332.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="374" depart="336.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="388" depart="349.20">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="391" depart="351.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="396" depart="356.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="400" depart="360.00">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="404" depart="363.60">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="405" depart="364.50">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="409" depart="368.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="422" depart="379.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="423" depart="380.70">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="427" depart="384.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="433" depart="389.70">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="436" depart="392.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="440" depart="396.00">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="449" depart="404.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="453" depart="407.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="458" depart="412.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="459" depart="413.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="466" depart="419.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="474" depart="426.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="476" depart="428.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="480" depart="432.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="481" depart="432.90">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="482" depart="433.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="485" depart="436.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="486" depart="437.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="487" depart="438.30">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="489" depart="440.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="492" depart="442.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="496" depart="446.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="498" depart="448.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="499" depart="449.10">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="502" depart="451.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="503" depart="452.70">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="505" depart="454.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="510" depart="459.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="514" depart="462.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="519" depart="467.10">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="520" depart="468.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="525" depart="472.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="528" depart="475.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="533" depart="479.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="541" depart="486.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="549" depart="494.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="552" depart="496.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="560" depart="504.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="563" depart="506.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="571" depart="513.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="574" depart="516.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="578" depart="520.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="580" depart="522.00">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="585" depart="526.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="586" depart="527.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="589" depart="530.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="590" depart="531.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="592" depart="532.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="593" depart="533.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="594" depart="534.60">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="596" depart="536.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="601" depart="540.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="602" depart="541.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="603" depart="542.70">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="609" depart="548.10">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="613" depart="551.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="615" depart="553.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="619" depart="557.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="621" depart="558.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="629" depart="566.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="630" depart="567.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="637" depart="573.30">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="640" depart="576.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="642" depart="577.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="643" depart="578.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="652" depart="586.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="654" depart="588.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="655" depart="589.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="657" depart="591.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="660" depart="594.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="664" depart="597.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="666" depart="599.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="668" depart="601.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="673" depart="605.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="674" depart="606.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="676" depart="608.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="690" depart="621.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="698" depart="628.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="705" depart="634.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="710" depart="639.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="712" depart="640.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="716" depart="644.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="724" depart="651.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="725" depart="652.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="747" depart="672.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="754" depart="678.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="755" depart="679.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="758" depart="682.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="760" depart="684.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="763" depart="686.70">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="776" depart="698.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="780" depart="702.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="791" depart="711.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="792" depart="712.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="795" depart="715.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="801" depart="720.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="804" depart="723.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="805" depart="724.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="812" depart="730.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="813" depart="731.70">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="819" depart="737.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="837" depart="753.30">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="845" depart="760.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="849" depart="764.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="850" depart="765.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="855" depart="769.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="862" depart="775.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="863" depart="776.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="865" depart="778.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="872" depart="784.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="874" depart="786.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="878" depart="790.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="880" depart="792.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="884" depart="795.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="886" depart="797.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="887" depart="798.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="890" depart="801.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="891" depart="801.90">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="892" depart="802.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="894" depart="804.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="898" depart="808.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="900" depart="810.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="910" depart="819.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="914" depart="822.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="915" depart="823.50">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="916" depart="824.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="917" depart="825.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="922" depart="829.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="924" depart="831.60">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="925" depart="832.50">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="929" depart="836.10">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="932" depart="838.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="935" depart="841.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="945" depart="850.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="946" depart="851.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="955" depart="859.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="965" depart="868.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="971" depart="873.90">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="974" depart="876.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="976" depart="878.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="979" depart="881.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="980" depart="882.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="982" depart="883.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="988" depart="889.20">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="989" depart="890.10">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="990" depart="891.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="991" depart="891.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="998" depart="898.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="999" depart="899.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1003" depart="902.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1012" depart="910.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1015" depart="913.50">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1022" depart="919.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1032" depart="928.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1038" depart="934.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1045" depart="940.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1050" depart="945.00">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1051" depart="945.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1052" depart="946.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1058" depart="952.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1059" depart="953.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1066" depart="959.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1069" depart="962.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1076" depart="968.40">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1081" depart="972.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1082" depart="973.80">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1090" depart="981.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1095" depart="985.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1102" depart="991.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1104" depart="993.60">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1107" depart="996.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1108" depart="997.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1110" depart="999.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1111" depart="999.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1117" depart="1005.30">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1118" depart="1006.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1120" depart="1008.00">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1123" depart="1010.70">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1125" depart="1012.50">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1132" depart="1018.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1133" depart="1019.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1137" depart="1023.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1143" depart="1028.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1144" depart="1029.60">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1148" depart="1033.20">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1149" depart="1034.10">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1151" depart="1035.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1158" depart="1042.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1166" depart="1049.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1167" depart="1050.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1168" depart="1051.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1171" depart="1053.90">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1176" depart="1058.40">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1178" depart="1060.20">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1183" depart="1064.70">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1191" depart="1071.90">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1192" depart="1072.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1194" depart="1074.60">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1196" depart="1076.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1197" depart="1077.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1202" depart="1081.80">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1208" depart="1087.20">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1211" depart="1089.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1213" depart="1091.70">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1214" depart="1092.60">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1218" depart="1096.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1227" depart="1104.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1229" depart="1106.10">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1231" depart="1107.90">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1233" depart="1109.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1236" depart="1112.40">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1237" depart="1113.30">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1238" depart="1114.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1242" depart="1117.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1243" depart="1118.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1245" depart="1120.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1246" depart="1121.40">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1252" depart="1126.80">
+        <route edges="J(01/00)N J(01/01)N"/>
+    </vehicle>
+    <vehicle id="1259" depart="1133.10">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1268" depart="1141.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1285" depart="1156.50">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1295" depart="1165.50">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1298" depart="1168.20">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1303" depart="1172.70">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1307" depart="1176.30">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1312" depart="1180.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1313" depart="1181.70">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1317" depart="1185.30">
+        <route edges="J(02/01)W J(01/01)W"/>
+    </vehicle>
+    <vehicle id="1320" depart="1188.00">
+        <route edges="J(00/01)E J(01/01)E"/>
+    </vehicle>
+    <vehicle id="1322" depart="1189.80">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+    <vehicle id="1331" depart="1197.90">
+        <route edges="J(01/02)S J(01/01)S"/>
+    </vehicle>
+</routes>

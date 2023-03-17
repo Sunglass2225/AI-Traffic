@@ -3,17 +3,16 @@ import pandas as pd
 import numpy as np
 from Network import Network
 from Controller import MaxPressureController
-from Controller import IDQNcontroller
+from Controller import dqnController
 import traci
 import os
 import sys
 import json
 from DQN_Agent import DQNAgent
-from data_logger import Data_Logger
 
 if __name__ == "__main__":
 
-    controller_type = "idqn_Controller"
+    controller_type = "dqn_Controller"
 
     # LOAD SUMO STUFF
     cfgfilename = "SUMO_Network.sumo.cfg"
@@ -22,12 +21,8 @@ if __name__ == "__main__":
     filepath = os.path.join(dir_path,"network",cfgfilename)
     print(filepath)
 
-    #sumoCmd = ["sumo", "-c", filepath]
-    sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
-
-    runID = 'BBB'
-    #create data logger, pass in runID
-    logger = Data_Logger(runID)
+    sumoCmd = ["sumo", "-c", filepath]
+    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
 
     # initialize the network object and controller object
     tracilabel = "sim1"
@@ -35,28 +30,25 @@ if __name__ == "__main__":
     conn = traci.getConnection(tracilabel)
 
     network = Network(filepath, conn)
-    controller = None
+    controller = "max_pressure"
     agent = None
     if controller_type == "max_pressure":
         controller = MaxPressureController()
     else:
-        controller = IDQNcontroller()
+        controller = dqnController()
         agent = DQNAgent()
         try:
-            agent.load('DQN_control_2.h5')
+            agent.load('DQN_control_0.h5')
             print('Agent_loaded')
         except:
             print('No models found')
 
     step = 0
     action = 0
-    reward_list = [0, 0, 0]
-    state_list = [0, 0, 0]
-    action_list = [0, 0, 0]
 
     while conn.simulation.getMinExpectedNumber() > 0:
         conn.simulationStep()
-        if step > 1 and step % 10 == 0:
+        if step > 1 and step % 30 == 0:
 
             # get current state
 
@@ -79,28 +71,20 @@ if __name__ == "__main__":
                     #########write_state_to_file(state)   
                     #metrics = updateMetrics(conn,metrics,state,geometry)
             
-            if controller_type == "idqn_Controller":
-                print("Start")
+            if controller_type == "dqn_Controller":
+                geometry = network.DQNgeometry
+                state = network.DQN_getstate(conn, action)
 
-                for i in range(len(intersections)):         
-                    intersection = intersections[i]
-                    geometry = network.getGeometry(intersection)
-                    action  = action_list[i]
+                result = controller.getController(state, geometry, conn)
+                control = result[0]
+                action = result[2]
+                print("controller: ", control)
+                print("T: ", result[1])
+                print("action: ", action)
 
-                    state = network.IDQN_getstate(conn, intersection, action)
-                    state_metric = network.getState(conn, intersection)
-
-                    result = controller.getController(state[0], geometry, agent)
-                    control = result[0]
-                    action = result[1]
-                    action_list[i] = action
-                    print("   " + intersection + " light list : " + str(control))
-                    print("   " + intersection + " Action : " + str(action + 1))
-                    # update the state of the network
-                    network.applyControl(control,conn,intersection)   
-
-                logger.updateLane(step, conn, network.allLaneId)
-                logger.updateVeh(step, conn, state_metric)
+                for i in range(len(geometry["intersections"])):
+                    network.applyControl(control[i],conn, geometry["intersections"][i])
+                    print("Current traffic light is " + str(network.network[intersections[i]]["geometry"]["light_list"]))
            
         step += 1
 
