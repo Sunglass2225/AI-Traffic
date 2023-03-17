@@ -134,15 +134,19 @@ if __name__ == '__main__':
             Halting_number += network.getHaltingNum(conn)            
             
             step += 1
+            if step == 400:
+                keras.backend.clear_session()
 
-
-        for i in range(len(intersections)): 
-            agent_list[i].save('DQN_control_sinale_agent_' + str(i+1) + "_" + str(e) + '.h5')
 
 
         mem = agent_list[0].memory[-1]
         del agent_list[0].memory[-1]
         agent_list[0].memory.append((mem[0], mem[1], reward_list[-1], mem[3], True))
+        
+        
+        for i in range(len(intersections)): 
+            agent_list[i].save('DQN_control_sinale_agent_' + str(i+1) + "_" + str(e) + '.h5')
+
         
         print('episode - ' + str(e) + ' total Halting number - ' + str(Halting_number))
 
