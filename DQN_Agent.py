@@ -14,7 +14,7 @@ from keras.models import Model
 
 class DQNAgent:
     def __init__(self):
-        self.gamma = 0.95   # discount rate
+        self.gamma = 0.75   # discount rate
         self.epsilon = 1.0  # exploration rate
         self.epsilon_decay = 0.995
         self.epsilon_min = 0.01
@@ -43,6 +43,7 @@ class DQNAgent:
         x3 = Flatten()(input_3)
 
         x = keras.layers.concatenate([x1, x3])
+        x = Dense(512, activation='relu')(x)
         x = Dense(256, activation='relu')(x) #Dense 普通神經網路  ## why 128
         x = Dense(128, activation='relu')(x)  #
         x = Dense(64)(x) 

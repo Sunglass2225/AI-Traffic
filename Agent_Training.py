@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
         print("Initial traffic light is " + str(geometry["DQN_light_list"]))
 
-        while conn.simulation.getMinExpectedNumber() > 0:
+        while conn.simulation.getMinExpectedNumber() > 0 and step < 5000:
             conn.simulationStep()
             if step >= 0 and step%10 == 0:
                 print('step: ' + str(step))
@@ -113,7 +113,7 @@ if __name__ == '__main__':
                     network.applyControl(controller[i],conn, geometry["intersections"][i])
                     print("Current traffic light is " + str(network.network[intersections[i]]["geometry"]["light_list"]))
 
-            reward += -(network.getHaltingNum(conn))
+            reward += -(network.getwaitingtime(conn))
 
             Halting_number += network.getHaltingNum(conn)
 
@@ -125,8 +125,6 @@ if __name__ == '__main__':
 
             
             step += 1
-            if step == 800:
-                keras.backend.clear_session()
 
 
         mem = agent.memory[-1]

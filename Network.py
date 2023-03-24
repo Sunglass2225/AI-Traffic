@@ -127,6 +127,13 @@ class Network:
 
     return HaltingNum
 
+  def getwaitingtime(self, conn):
+    waitingtime = 0
+    for i in range(self.allnumberofLane):
+        waitingtime += conn.lane.getWaitingTime(self.allLaneId[i])
+
+    return waitingtime
+
   def gethaltingratio(self, intersection, conn):
     pressuer_ratio = 0
     veh_num = 0
