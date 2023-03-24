@@ -22,21 +22,17 @@ if __name__ == "__main__":
     filepath = os.path.join(dir_path,"network",cfgfilename)
     print(filepath)
 
-    #sumoCmd = ["sumo", "-c", filepath]
-    sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
-
-    runID = 'BBB'
-    #create data logger, pass in runID
-    logger = Data_Logger(runID)
+    sumoCmd = ["sumo", "-c", filepath]
+    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
 
     # initialize the network object and controller object
     tracilabel = "sim1"
     traci.start(sumoCmd, label=tracilabel)
     conn = traci.getConnection(tracilabel)
 
-    network = Network(filepath, conn)
     controller = None
     agent = None
+    
     if controller_type == "max_pressure":
         controller = MaxPressureController()
     else:
@@ -47,6 +43,8 @@ if __name__ == "__main__":
             print('Agent_loaded')
         except:
             print('No models found')
+
+    network = Network(filepath, conn, agent)
 
     step = 0
     action = 0
@@ -99,8 +97,6 @@ if __name__ == "__main__":
                     # update the state of the network
                     network.applyControl(control,conn,intersection)   
 
-                logger.updateLane(step, conn, network.allLaneId)
-                logger.updateVeh(step, conn, state_metric)
            
         step += 1
 

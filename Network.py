@@ -127,27 +127,13 @@ class Network:
 
     return HaltingNum
 
-  def getIntersectionHaltingNum(self, intersection, conn):
-    HaltingNum = 0
+  def getIntersectionWaitingTime(self, intersection, conn):
+    WaitingTime = 0
     for i in range(len(self.network[intersection]["geometry"]["LaneID"])):
-        HaltingNum += conn.lane.getLastStepHaltingNumber(self.network[intersection]["geometry"]["LaneID"][i])
+        WaitingTime += conn.lane.getWaitingTime(self.network[intersection]["geometry"]["LaneID"][i])
 
-    return HaltingNum
+    return WaitingTime
 
-  def gethaltingratio(self, intersection, conn):
-    pressuer_ratio = 0
-    veh_num = 0
-    hal_num = 0
-    for x in range(len(self.network[intersection]["geometry"]["LaneID"])):
-        veh_num += conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])
-        hal_num += conn.lane.getLastStepHaltingNumber(self.network[intersection]["geometry"]["LaneID"][x])
-    
-    if veh_num == 0:
-        pressuer_ratio = 0
-    else:
-        pressuer_ratio = hal_num/veh_num
-
-    return pressuer_ratio
   
   def applyControl(self,controller,conn,intersection):
     RedYellowGreenState = ''.join(str(e) for e in controller)
@@ -194,7 +180,7 @@ def trafficlight_light(junction,conn):
   
   return light_list
 
-def trafficlight_phase(list_links, light_list, agent):  #putting the link, phase, and light into a matrix
+def trafficlight_phase(list_links, light_list, action_size):  #putting the link, phase, and light into a matrix
   a = 0  # phase id
   w = len(list_links)
   h = 3
@@ -209,7 +195,7 @@ def trafficlight_phase(list_links, light_list, agent):  #putting the link, phase
           a -= 1
           # using the fisrt two chart of the two elements to defined whether their in the same phase
       
-      Matrix[1][i] = a % agent.action_size
+      Matrix[1][i] = a % action_size
       a += 1
 
       

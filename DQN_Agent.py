@@ -16,7 +16,7 @@ class DQNAgent:
     memory = deque(maxlen=500)
 
     def __init__(self):
-        self.gamma = 0.95   # discount rate
+        self.gamma = 0.75   # discount rate
         self.epsilon = 1.0  # exploration rate
         self.epsilon_decay = 0.995
         self.epsilon_min = 0.01
@@ -35,7 +35,8 @@ class DQNAgent:
 
         x = keras.layers.concatenate([x1, x2])
         x = Dense(128, activation='relu')(x) 
-        x = Dense(64, activation='relu')(x) 
+        x = Dense(64, activation='relu')(x)
+        x = Dense(32, activation='relu')(x)
         x = Dense(4)(x) 
 
         model = Model(inputs=[input_1, input_2], outputs=[x])
