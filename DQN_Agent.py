@@ -34,8 +34,8 @@ class DQNAgent:
         x2 = Flatten()(input_2)
 
         x = keras.layers.concatenate([x1, x2])
-        x = Dense(64, activation='relu')(x) 
-        x = Dense(32, activation='relu')(x) 
+        x = Dense(64, activation='relu')(x)
+        x = Dense(32, activation='relu')(x)
         x = Dense(2)(x) 
 
         model = Model(inputs=[input_1, input_2], outputs=[x])

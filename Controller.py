@@ -21,7 +21,8 @@ class MaxPressureController(Controller):
             length_upper_lane = geometry["length_lanes"][upper_lane]
             length_down_lane = geometry["length_lanes"][down_lane]
             geometry["pressure_map"][eachPair] = (numofvehicles_upper_lane / length_upper_lane) - (numofvehicles_down_lane / length_down_lane)
-        
+        print('geometry', geometry["pressure_map"])
+
         max_key = ""
         max_val = -1
         for key in geometry["pressure_map"]:
@@ -32,13 +33,20 @@ class MaxPressureController(Controller):
         max_key_list = max_key.split(",")
         max_link = findItem(geometry["list_links"], max_key_list[0], max_key_list[1])  # defind the max prssure link
         max_phase = geometry["phase_matrix"][1][max_link[0]] # defind which phase the max prssure link belonge
+        print('phase', geometry["phase_matrix"][1])
+        print('max_phase', max_phase)
         
         coltroller = []
-        for i in range(len(geometry["list_links"])):  # reset all light to RED
+        for i in range(12):  # reset all light to RED
             coltroller.append('r')
-        for i in range(len(geometry["list_links"])):  # change the phase that the max prssure link belonge to GREEN
-            if geometry["phase_matrix"][1][i] == max_phase:
-                coltroller[i] = 'G'
+        if max_phase == 0:
+            coltroller[1] = 'G'
+            coltroller[7] = 'G'
+        if max_phase == 1:
+            coltroller[4] = 'G'
+            coltroller[10] = 'G'
+
+        print(coltroller)
         return coltroller
         
 

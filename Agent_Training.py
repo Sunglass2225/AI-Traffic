@@ -30,8 +30,8 @@ if __name__ == '__main__':
     filepath_step_data = os.path.join(dir_path,"step_Data.csv")
     filepath_data = os.path.join(dir_path,"Data.csv")
     print(filepath)
-    #sumoCmd = ["sumo", "-c", filepath]
-    sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+    sumoCmd = ["sumo", "-c", filepath]
+    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
 
     # parameters
     episodes = 2000
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # LOAD AGENT
     agent = DQNAgent()
     try:
-        agent.load('DQN_control_3.h5')
+        agent.load('DQN_control_9.h5')
         print('Agent_loaded')
     except:
         print('No models found')
@@ -85,20 +85,19 @@ if __name__ == '__main__':
                         MSE = agent.replay(batch_size)
                     agent.target_train()
 
-                    list01 = [step, reward, MSE]
+                    list01 = [step, network.getwaitingtime(conn), reward, MSE]
                     with open(filepath_step_data, 'a', newline='') as w_object:
                         writer_object = writer(w_object)
                         writer_object.writerow(list01)
                         w_object.close()
-
+                    
                     reward = 0
-
                 
                 
                 # controlling
                 print("Current traffic light is " + str(network.network[intersections[0]]["geometry"]["light_list"]))
                  
-                state = network.DQN_getstate(conn, action)
+                state = network.DQN_getstate(conn, action)[0]
                 
                 result = training.getController(state, geometry, conn, agent)
                 controller = result[0]
@@ -109,7 +108,9 @@ if __name__ == '__main__':
                 network.applyControl(controller,conn, geometry["intersections"][0])
                 print("Current traffic light is " + str(network.network[intersections[0]]["geometry"]["light_list"]))
 
-            reward += -(network.getHaltingNum(conn))
+            reward += -(network.getwaitingtime(conn))
+
+            #reward += -100*conn.simulation.getEndingTeleportNumber()
 
             Halting_number += network.getHaltingNum(conn)
 
