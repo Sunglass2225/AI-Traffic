@@ -7,7 +7,7 @@ import keras # important tool for deep learning
 import random
 import numpy as np
 
-from collections import deque  #®e¾¹
+from collections import deque  #å®¹å™¨
 from keras.layers import Input, Flatten, Dense
 from keras.models import Model  
 
@@ -28,15 +28,15 @@ class DQNAgent:
     def _build_model(self):
         # Neural Net for Deep-Q learning Model
         #input_1 = Input(shape=(12, 12, 1))
-        #x1 = Conv2D(16, (4, 4), strides=(2, 2), activation='relu')(input_1) #Conv2D±²¾÷ºô¸ô
+        #x1 = Conv2D(16, (4, 4), strides=(2, 2), activation='relu')(input_1) #Conv2Dæ²æ©Ÿç¶²è·¯
         #x1 = Conv2D(32, (2, 2), strides=(1, 1), activation='relu')(x1)
         #x1 = Flatten()(x1)
         input_1 = Input(shape=(60, 1)) #(60, 1)
         x1 = Flatten()(input_1)
 
         #input_2 = Input(shape=(12, 12, 1))
-        #x2 = Conv2D(16, (4, 4), strides=(2, 2), activation='relu')(input_2)  # 16­Ó¯«¸g¤¸
-        #x2 = Conv2D(32, (2, 2), strides=(1, 1), activation='relu')(x2)  # strides Åª¨ú¤j¤p
+        #x2 = Conv2D(16, (4, 4), strides=(2, 2), activation='relu')(input_2)  # 16å€‹ç¥ç¶“å…ƒ
+        #x2 = Conv2D(32, (2, 2), strides=(1, 1), activation='relu')(x2)  # strides è®€å–å¤§å°
         #x2 = Flatten()(x2)
 
         input_3 = Input(shape=(64, 1)) # last action ##(512, 0)
@@ -44,12 +44,12 @@ class DQNAgent:
 
         x = keras.layers.concatenate([x1, x3])
         x = Dense(512, activation='relu')(x)
-        x = Dense(256, activation='relu')(x) #Dense ´¶³q¯«¸gºô¸ô  ## why 128
+        x = Dense(256, activation='relu')(x) #Dense æ™®é€šç¥ç¶“ç¶²è·¯  ## why 128
         x = Dense(128, activation='relu')(x)  #
         x = Dense(64)(x) 
 
         model = Model(inputs=[input_1, input_3], outputs=[x])
-        model.compile(optimizer=optimizers.RMSprop(
+        model.compile(optimizer=optimizers.Adam(
             lr=self.learning_rate), loss='mse',  metrics=['mse']) #loss function################# |MSE-MSE'| < 0.0001 or learning rate*gredient < 0.001
 
         return model
