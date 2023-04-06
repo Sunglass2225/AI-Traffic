@@ -20,9 +20,11 @@ if __name__ == '__main__':
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     filepath = os.path.join(dir_path,"network",cfgfilename)
+    filepath_step_data = os.path.join(dir_path,"step_Data.csv")
+    filepath_data = os.path.join(dir_path,"Data.csv")
     print(filepath)
     sumoCmd = ["sumo", "-c", filepath]
-    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation in sumo-gui
         
     # parameters
     episodes = 2000
@@ -37,9 +39,9 @@ if __name__ == '__main__':
     agent3 = DQNAgent()
 
     try:
-        agent1.load('DQN_control_2.h5')
-        agent2.load('DQN_control_2.h5')
-        agent3.load('DQN_control_2.h5')
+        agent1.load('IDQN_control_sinale_agent_1_125.h5')
+        agent2.load('IDQN_control_sinale_agent_2_125.h5')
+        agent3.load('IDQN_control_sinale_agent_3_125.h5')
         print('Agent_loaded')
     except:
         print('No models found')
@@ -52,12 +54,12 @@ if __name__ == '__main__':
         
         step = 0
         wating_time = 0
-        waiting_number = 0
+        Halting_number = 0
+        Total_waiting_time = 0
         total_reward = 0
         MSE = [0, 0, 0]
-        last_ratio = [0, 0, 0]
-        next_ratio = [0, 0, 0]
         reward_list = [0, 0, 0]
+        last_reward_list = [0, 0, 0]
         state_list = [0, 0, 0]
         action_list = [0, 0, 0]
         state_check_list = [0, 0, 0]
@@ -67,11 +69,11 @@ if __name__ == '__main__':
         traci.start(sumoCmd, label=tracilabel)
         conn = traci.getConnection(tracilabel)
 
-        network = Network(filepath, conn)
+        network = Network(filepath, conn, agent1)
         intersections = network.intersections
         controller = IDQNcontroller()
 
-        while conn.simulation.getMinExpectedNumber() > 0 and step < 1000:
+        while conn.simulation.getMinExpectedNumber() > 0 and step < 1700:
             conn.simulationStep()
 
             if step >= 0 and step%10 == 0:
@@ -81,14 +83,12 @@ if __name__ == '__main__':
                 # memorizing
                 if step > 2:
                     for i in range(len(intersections)):
-                        if step == 10:
-                            last_ratio[i] = next_ratio[i]    
-                        reward_list[i] = 100*(last_ratio[i] - next_ratio[i])
-                        last_ratio[i] = next_ratio[i]
-                        total_reward += reward_list[i]
-                        print('reward: ' + str(reward_list[i]))
+                        reward = reward_list[i] - last_reward_list[i]
+                        last_reward_list[i] = reward_list[i]
+
                         new_state = network.IDQN_getstate(conn, intersection, action)
-                        agent_list[i].remember(state_list[i], action_list[i], reward_list[i], new_state[0], False)
+                        agent_list[i].remember(state_list[i], action_list[i], reward, new_state[0], False)
+
                         print('memory_lenth: ' + str(len(agent_list[i].memory)))
                         if(len(agent_list[i].memory) > batch_size):
                             MSE[i] = agent_list[i].replay(batch_size)
@@ -101,17 +101,20 @@ if __name__ == '__main__':
                     geometry = network.getGeometry(intersection)
                     action  = action_list[i]
 
-                    state = network.IDQN_getstate(conn, intersection, action)
+                    #print(conn.multientryexit.getIDList())
+
+                    state = network.IDQN_getstate(conn, intersection, action)[0]
+                    print(state)
                     state_list[i] = state[0]
 
                     state_check_list[i] = state[1]
 
-                    result = controller.getController(state[0], geometry, agent_list[i])
+                    result = controller.getController(state, geometry, agent_list[i])
                     control = result[0]
                     action = result[1]
                     action_list[i] = action
                     print("   " + intersection + " light list : " + str(control))
-                    print("   " + intersection + " Action : " + str(action + 1))
+                    print("   " + intersection + " Action : " + str(action))
                     # update the state of the network
                     network.applyControl(control,conn,intersection)   
 
@@ -120,33 +123,40 @@ if __name__ == '__main__':
                 print("Current traffic light is " + str(network.network[intersections[2]]["geometry"]["light_list"]))
 
                 list01 = [step, reward_list[0], reward_list[1], reward_list[2], action_list[0], action_list[1], action_list[2], MSE[0], MSE[1], MSE[2]]
-                with open('step_Data.csv', 'a', newline='') as w_object:
+                with open(filepath_step_data, 'a', newline='') as w_object:
                     writer_object = writer(w_object)
                     writer_object.writerow(list01)
                     w_object.close()
 
+                for i in range(len(intersections)): 
+                    reward_list[i] = 0
+                
+
             
             for i in range(len(intersections)):    
-                next_ratio[i] = network.gethaltingratio(intersections[i], conn)
+                reward_list[i] += -(network.getIntersectionWaitingTime(intersections[i], conn))
 
-            waiting_number += network.getHaltingNum(conn)            
+            for i in range(len(intersections)):    
+                Total_waiting_time += -(network.getIntersectionWaitingTime(intersections[i], conn))
+
+            Halting_number += network.getHaltingNum(conn)            
             
             step += 1
 
 
         for i in range(len(intersections)): 
-            agent_list[i].save('DQN_control_agent_' + str(i+1) + "_" + str(e) + '.h5')
+            agent_list[i].save('IDQN_control_sinale_agent_' + str(i+1) + "_" + str(e) + '.h5')
 
 
         mem = agent_list[0].memory[-1]
         del agent_list[0].memory[-1]
         agent_list[0].memory.append((mem[0], mem[1], reward_list[-1], mem[3], True))
         
-        print('episode - ' + str(e) + ' total waiting number - ' + str(waiting_number))
+        print('episode - ' + str(e) + ' total Halting number - ' + str(Halting_number))
 
-        list = [str(e), waiting_number, total_reward]
+        list = [str(e), Halting_number,  ]
 
-        with open('Data.csv', 'a', newline='') as w_object:
+        with open(filepath_data, 'a', newline='') as w_object:
             writer_object = writer(w_object)
             writer_object.writerow(list)
             print('list', list)
