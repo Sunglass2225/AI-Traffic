@@ -86,8 +86,8 @@ if __name__ == '__main__':
                         reward = reward_list[i] - last_reward_list[i]
                         last_reward_list[i] = reward_list[i]
 
-                        new_state = network.IDQN_getstate(conn, intersection, action)
-                        agent_list[i].remember(state_list[i], action_list[i], reward, new_state[0], False)
+                        new_state = network.IDQN_getstate(conn, intersection, action)[0]
+                        agent_list[i].remember(state_list[i], action_list[i], reward, new_state, False)
 
                         print('memory_lenth: ' + str(len(agent_list[i].memory)))
                         if(len(agent_list[i].memory) > batch_size):
@@ -104,10 +104,7 @@ if __name__ == '__main__':
                     #print(conn.multientryexit.getIDList())
 
                     state = network.IDQN_getstate(conn, intersection, action)[0]
-                    print(state)
-                    state_list[i] = state[0]
-
-                    state_check_list[i] = state[1]
+                    state_list[i] = state
 
                     result = controller.getController(state, geometry, agent_list[i])
                     control = result[0]
