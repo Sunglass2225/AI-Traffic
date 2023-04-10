@@ -151,7 +151,7 @@ if __name__ == '__main__':
         
         print('episode - ' + str(e) + ' total Halting number - ' + str(Halting_number))
 
-        list = [str(e), Halting_number,  ]
+        list = [str(e), Halting_number,  Total_waiting_time]
 
         with open(filepath_data, 'a', newline='') as w_object:
             writer_object = writer(w_object)
