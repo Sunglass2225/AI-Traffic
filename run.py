@@ -13,7 +13,7 @@ from data_logger import Data_Logger
 
 if __name__ == "__main__":
 
-    controller_type = "max_pressure"
+    controller_type = "idqn_Controller"
 
     # LOAD SUMO STUFF
     cfgfilename = "SUMO_Network.sumo.cfg"
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     filepath = os.path.join(dir_path,"network",cfgfilename)
     print(filepath)
 
-    #sumoCmd = ["sumo", "-c", filepath]
-    sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+    sumoCmd = ["sumo", "-c", filepath]
+    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
 
     # initialize the network object and controller object
     tracilabel = "sim1"
@@ -44,9 +44,9 @@ if __name__ == "__main__":
         controller = IDQNcontroller()
         agent = DQNAgent()
         try:
-            agent1.load('DQN_control_sinale_agent_1_69.h5')
-            agent2.load('DQN_control_sinale_agent_2_69.h5')
-            agent3.load('DQN_control_sinale_agent_3_69.h5')
+            agent1.load('IDQN_control_sinale_agent_1_63.h5')
+            agent2.load('IDQN_control_sinale_agent_2_63.h5')
+            agent3.load('IDQN_control_sinale_agent_3_63.h5')
             print('Agent_loaded')
         except:
             print('No models found')
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     Total_waiting_time = 0
 
-    runID = 'Ryan_idqn_Controller'
+    runID = 'idqn'
     logger = Data_Logger(runID)
 
     while conn.simulation.getMinExpectedNumber() > 0:
@@ -116,6 +116,9 @@ if __name__ == "__main__":
                     print("   " + intersection + " Action : " + str(action + 1))
                     # update the state of the network
                     network.applyControl(control,conn,intersection)   
+
+                for i in range(len(intersections)):    
+                    Total_waiting_time += -(network.getIntersectionWaitingTime(intersections[i], conn))
 
             logger.updateLane(step, conn, network.allLaneId)
             logger.updateVeh(step, conn, state)
