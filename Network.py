@@ -12,6 +12,7 @@ class Network:
     self.network = {}
     self.DQNgeometry = {}
     self.allLaneId = []
+    self.totalVehicleNumber = 0
     step = 0
     i = 0
     allLaneId = []
@@ -81,14 +82,17 @@ class Network:
     return self.network[intersection]["geometry"]
 
   def getState(self,conn,intersection):
+    totalVehicleNumber = 0
     vehicle_number_each_lane = {}                # map from lane_id to number of vehicles
     for x in range(self.network[intersection]["geometry"]["numberOfLane"]):  
         lane_length = conn.lane.getLength(self.network[intersection]["geometry"]["LaneID"][x])                    # extract length and number of
         total_number = conn.lane.getLastStepVehicleNumber(self.network[intersection]["geometry"]["LaneID"][x])    # vehicles in each lane
         vehicle_number_each_lane[self.network[intersection]["geometry"]["LaneID"][x]] = total_number
+        totalVehicleNumber += total_number
     self.network[intersection]["state"]["vehicle_number_each_lane"] = vehicle_number_each_lane
     VehicleID = conn.vehicle.getIDList()
     self.network[intersection]["state"]["vehicleID"] = VehicleID
+    self.totalVehicleNumber = totalVehicleNumber
     return self.network[intersection]["state"]
 
   def DQN_getstate(self, conn, action):

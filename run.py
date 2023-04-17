@@ -13,7 +13,7 @@ from data_logger import Data_Logger
 
 if __name__ == "__main__":
 
-    controller_type = "max_pressure"
+    controller_type = "dqn_Controller"
 
     # LOAD SUMO STUFF
     cfgfilename = "3_16RUNNER.sumo.cfg"
@@ -39,12 +39,12 @@ if __name__ == "__main__":
         controller = dqnController()
         agent = DQNAgent()
         try:
-            agent.load('DQN_control_9.h5')
+            agent.load('DQN_control_10.h5')
             print('Agent_loaded')
         except:
             print('No models found')
 
-    runID = 'max_pressure_one_intersection'
+    runID = '0417_dqn_Controller_one_intersection'
     logger = Data_Logger(runID)
     network = Network(filepath, conn, agent)        
     step = 0
@@ -75,10 +75,11 @@ if __name__ == "__main__":
                 #########write_state_to_file(state)   
                 #metrics = updateMetrics(conn,metrics,state,geometry)
             
-            if controller_type == "idqn_Controller":
+            if controller_type == "dqn_Controller":
                 geometry = network.DQNgeometry
                 DQN_state = network.DQN_getstate(conn, action)[0]
                 state = network.DQN_getstate(conn, action)[1]
+                state_metric = network.getState(conn, intersections[0])
 
                 result = controller.getController(DQN_state, geometry, conn, agent)
                 control = result[0]
@@ -92,6 +93,7 @@ if __name__ == "__main__":
             # write_state_to_file(state)
             logger.updateLane(step, conn, network.allLaneId)
             logger.updateVeh(step, conn, state)
+            logger.updateTotalVeh(step,network.totalVehicleNumber)
 
                     
            
