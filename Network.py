@@ -74,6 +74,7 @@ class Network:
     self.DQNgeometry["DQN_light_list"] = DQN_light_list
     self.DQNgeometry["DQN_phase_matrix"] = DQN_phase_matrix
     self.DQNgeometry["intersections"] = intersections
+    self.DQNgeometry["state"] = {}
      
   def getGeometry(self,intersection):
     return self.network[intersection]["geometry"]
@@ -110,8 +111,11 @@ class Network:
 
     DQN_action_arr = np.array(DQN_action)
     DQN_action_arr = DQN_action_arr.reshape(1, 64, 1)
+
+    VehicleID = conn.vehicle.getIDList()
+    self.DQNgeometry["state"]["vehicleID"] = VehicleID
       
-    return [num_each_lane_arr, DQN_action_arr]
+    return [num_each_lane_arr, DQN_action_arr], self.DQNgeometry["state"]
 
   def getVehicleNum(self, conn):
     VehicleNum = 0
