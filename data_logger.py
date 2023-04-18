@@ -14,9 +14,12 @@ class Data_Logger:
         #open csv
         self.lane_file = open("{}_metrics_lane.csv".format(runID), "w")
         self.veh_file = open("{}_metrics_veh.csv".format(runID), "w")
+        self.totalveh_file = open("{}_metrics_total_veh.csv".format(runID), "w")
+
 
         self.lane_file.write('step,laneID,WaitingTime,CO2\n')
         self.veh_file.write('step,vehicleID,TimeLoss,AccumulatedWaitingTime\n')
+        self.totalveh_file.write('step,totalVehicleNumber\n')
 
     def updateLane(self, step, conn, allLaneId):
 
@@ -45,6 +48,12 @@ class Data_Logger:
             #     conn.vehicle.getTimeLoss(vehicle))
             # metrics[vehicle]['AccumulatedWaitingTime'].append(conn.vehicle.getAccumulatedWaitingTime(vehicle))
 
+    def updateTotalVeh(self, step, totalVehicleNumber):
+
+        self.totalveh_file.write("{},{}\n".format(
+            step,
+            totalVehicleNumber))
+        
 
     def close(self):
         self.lane_file.close()

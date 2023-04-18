@@ -13,7 +13,7 @@ from data_logger import Data_Logger
 
 if __name__ == "__main__":
 
-    controller_type = "idqn_Controller"
+    controller_type = "max_pressure"
 
     # LOAD SUMO STUFF
     cfgfilename = "SUMO_Network.sumo.cfg"
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     filepath = os.path.join(dir_path,"network",cfgfilename)
     print(filepath)
 
-    sumoCmd = ["sumo", "-c", filepath]
-    #sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
+    #sumoCmd = ["sumo", "-c", filepath]
+    sumoCmd = ["sumo-gui", "-c", filepath]  # if you want to see the simulation
 
     # initialize the network object and controller object
     tracilabel = "sim1"
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     Total_waiting_time = 0
 
-    runID = 'idqn'
+    runID = '0417_MP'
     logger = Data_Logger(runID)
 
     while conn.simulation.getMinExpectedNumber() > 0:
@@ -122,6 +122,7 @@ if __name__ == "__main__":
 
             logger.updateLane(step, conn, network.allLaneId)
             logger.updateVeh(step, conn, state)
+            logger.updateTotalVeh(step, network.getVehicleNum(conn))
         
             print('Total_waiting_time', Total_waiting_time)
 
